@@ -14,10 +14,23 @@ function RootComponent() {
           </Link>
           <nav className="flex items-center gap-4 text-sm">
             <Link
+              to="/"
+              activeOptions={{ exact: true }}
+              className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground [&.active]:font-medium"
+            >
+              Dashboard
+            </Link>
+            <Link
               to="/compromissos"
               className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground [&.active]:font-medium"
             >
               Compromissos
+            </Link>
+            <Link
+              to="/recorrentes"
+              className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground [&.active]:font-medium"
+            >
+              Recorrentes
             </Link>
           </nav>
         </div>
