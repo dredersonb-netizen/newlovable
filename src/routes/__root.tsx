@@ -32,6 +32,12 @@ function RootComponent() {
             >
               Recorrentes
             </Link>
+            <Link
+              to="/atrasadas"
+              className="text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground [&.active]:font-medium"
+            >
+              Atrasadas
+            </Link>
           </nav>
         </div>
       </header>
