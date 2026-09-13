@@ -22,6 +22,7 @@ interface Commitment {
   total_amount: number
   installments_count: number
   first_due_date: string
+  commitment_items?: { amount: number; paid: boolean }[]
 }
 
 interface Installment {
@@ -54,7 +55,9 @@ function DashboardPage() {
           .order('due_day', { ascending: true }),
         supabase
           .from('commitments')
-          .select('id, name, kind, total_amount, installments_count, first_due_date')
+          .select(
+            'id, name, kind, total_amount, installments_count, first_due_date, commitment_items(amount, paid)',
+          )
           .eq('archived', false)
           .order('first_due_date', { ascending: true }),
         supabase
@@ -90,7 +93,14 @@ function DashboardPage() {
   }, [])
 
   const billsTotal = bills.reduce((sum, b) => sum + Number(b.amount), 0)
-  const commitmentsTotal = commitments.reduce((sum, c) => sum + Number(c.total_amount), 0)
+  const commitmentsTotal = commitments.reduce((sum, c) => {
+    const items = c.commitment_items ?? []
+    if (items.length > 0) {
+      // Considera apenas os itens ainda não pagos, refletindo pagamentos parciais.
+      return sum + items.filter((i) => !i.paid).reduce((s, i) => s + Number(i.amount), 0)
+    }
+    return sum + Number(c.total_amount)
+  }, 0)
 
   return (
     <div className="container py-10">
